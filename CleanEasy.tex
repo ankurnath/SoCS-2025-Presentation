@@ -9,23 +9,19 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
-% \usepackage[brazil]{babel}
 \usepackage{fix-cm}
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{hyperref}
-\usepackage{graphicx} % Allows including images
-\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage{tikz}
 \usetikzlibrary{positioning, shapes, arrows, calc, decorations.pathreplacing, arrows.meta, backgrounds, patterns, overlay-beamer-styles}
 \usepackage{etoolbox}
 \usepackage{animate}
 \usepackage{fontawesome5}
-
-
-
 \usepackage{pifont}
 \usepackage{xcolor}
 
@@ -45,322 +41,201 @@
 
 \begin{document}
 
+%--- TITLE ---
 \begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}[plain]{Why Reduce the Search Space of Combinatorial Optimization on Graphs?}
-    \centering
-    \textbf{\large }
-    \vspace{0.5cm}
-    
-    \begin{columns}[T,onlytextwidth]
-        % Left Column
-        \column{0.48\textwidth}
-        \textbf{\textcolor{blue}{Motivation}}
-        \begin{itemize}
-            \item[\faTasks] Common tasks: Max Cover, Influence Maximization, TSP
-            \item[\faFilter] Many elements irrelevant to solution
-            \item[\faBolt] Smaller search space $\rightarrow$ faster computation
-        \end{itemize}
-        
-        % Right Column
-        \column{0.48\textwidth}
-        \textbf{\textcolor{red}{Challenges}}
-        \begin{itemize}
-            \item[\faExclamationTriangle] NP-hard problems
-            \item[\faProjectDiagram] Graphs with billions of nodes
-        \end{itemize}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[plain]{Motivating Example}
-    \small
-    \begin{columns}[T,onlytextwidth]
-        % Left column: Text
-        \column{0.55\textwidth}
-        Consider the problem of selecting \textbf{influential individuals} in a social network 
-        to receive free product samples, aiming to trigger a cascade of product adoptions 
-        through \textbf{word of mouth}.
-        
-        \vspace{0.3cm}
-        Many individuals are poor candidates for selection, such as those with 
-        \textit{limited social connections}.
-        
-        \vspace{0.3cm}
-        Instead of considering the \textbf{entire population}, we can focus on a 
-        \textbf{smaller subset of highly influential individuals} who are more likely 
-        to reach a broad and diverse audience.
-        $$\max_{|S| \le k} f(S)$$
-        
-        % Right column: Figure
-        \column{0.45\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{logos/influence_maximization.PNG} % Replace with your figure path
-    \end{columns}
-\end{frame}
-
-\begin{frame}[plain]{ \faCut Pruning}
-
-  We are given a combinatorial optimization problem consisting of a ground set \(\mathcal{U}\) and an exact method \(\mathcal{OPT}\) for the problem. An optimal solution is defined as a subset of the ground set \(X^\star = \mathcal{OPT} (\mathcal{U}) \) that maximizes the objective function \(f(\cdot)\) while satisfying the size constraint \(|X| \leq B\), i.e
-
-
-\[X^\star  = \text{arg max}_{X \subset  \mathcal{U},|X|\leq B} f(X)\]
-
-The problem we aim to address is finding a significantly smaller ground set \(\mathcal{U}'\), such that \(|\mathcal{U}'| \ll |\mathcal{U}|\), while ensuring that the objective value remains unchanged, i.e.,  
-\[
-\frac{f(\mathcal{OPT}(\mathcal{U}'))}{f(\mathcal{OPT}(\mathcal{U}))} \ge 1 - \epsilon  \]
-
-    
-\end{frame}
-
-
-
-\begin{frame}[plain]{\faCut Pruning}
-
-\faLightbulbO\ \textbf{ Key Idea:}  
-\vspace{0.2cm}
-
-\begin{itemize}
-    \item[\faBolt] Quickly discard elements unlikely to be part of an optimal solution
-    \item[\faLock] \textbf{Preserve search quality} while improving efficiency
-\end{itemize}
-
-    
-\end{frame}
-
-\begin{frame}[plain]{Pruning CO Problems: Approaches \& Limitations}
-
+%--- ABOUT ME ---
+\begin{frame}[plain]{About Me}
 \begin{columns}[T,onlytextwidth]
-
-% Left Column: Categories
-\column{0.5\textwidth}
-\textbf{Pruning Approaches}
-\vspace{0.2cm}
-\begin{itemize}
-    \item \textbf{Supervised Learning}
+    \column{0.5\textwidth}
+    \textbf{\textcolor{blue}{Background}}
     \begin{itemize}
-        \item Handcrafted features.
-        \item Binary classifiers to prune nodes/edges.
-        \item [\textcolor{red}{\xmark}] Needs domain knowledge.
+        \item[\faGraduationCap] B.Sc.\ in \textbf{Electrical \& Electronic Engineering}\\
+        {\small Bangladesh University of Engineering \& Technology}
+        \item[\faGraduationCap] M.Sc.\ / Ph.D.\ in \textbf{Computer Science}\\
+        {\small Texas A\&M University (Advisor: Dr.\ Alan Kuhnle)}
+        \item[\faFlask] Research: \textbf{Learning-Guided Combinatorial Optimization}
     \end{itemize}
 
-    \vspace{0.2cm}
-    \item \textbf{Supervised + RL}
+    \column{0.5\textwidth}
+    \textbf{\textcolor{red}{Technical Profile}}
     \begin{itemize}
-        \item Learns pruning + solution policies.
-        \item Combines GNNs with search.
-        \item [\textcolor{red}{\xmark}] Problem-specific tuning.
+        \item[\faCogs] \textbf{Optimization:} Reinforcement learning for discrete optimization
+        \item[\faWrench] \textbf{Solvers \& Software:} Gurobi, CPLEX, PyTorch, PyTorch Geometric
     \end{itemize}
-\end{itemize}
-
-% Right Column: Examples & Drawbacks
-\column{0.5\textwidth}
-\textbf{Examples}
-\vspace{0.2cm}
-\begin{itemize}
-    \item \textbf{LeNSE} \cite{ireland2022lense}: GNN + local search.
-    \item \textbf{GCOMB} \cite{manchanda2020gcomb}: Degree heuristic + Q-learning.
-    \item \textbf{COMBHelper} \cite{tian2024combhelper}: GNN + Fourier features.
-    
-
-    \vspace{0.3cm}
-    \textbf{Common Issues}
-    \begin{itemize}
-        \item [\textcolor{red}{\xmark}] Not generalizable.
-        \item [\textcolor{red}{\xmark}] Costly feature design.
-        \item [\textcolor{red}{\xmark}] Needs expert tuning.
-    \end{itemize}
-\end{itemize}
-
 \end{columns}
-
 \end{frame}
 
-\begin{frame}[plain]{Our Approach: Generalizable Pruning Without Handcrafting}
+%--- OVERVIEW ---
+\begin{frame}[plain]{Today's Talk}
+\textbf{Hierarchical DeepPruner} \hfill {\small \textit{SoCS 2025}}\\[0.4cm]
 
+Reducing the search space of combinatorial optimization on graphs using a two-stage GNN and Monte Carlo Tree Search pipeline.
+
+\vspace{0.5cm}
+\textbf{Outline}
+\begin{enumerate}
+    \item Motivation and problem formulation
+    \item Two-stage approach: GNN pre-pruning + NMCTS refinement
+    \item Empirical results
+\end{enumerate}
+\end{frame}
+
+
+%======================================================
+%  Hierarchical DeepPruner
+%======================================================
+
+\begin{frame}[plain]{Motivation}
+    \begin{columns}[T,onlytextwidth]
+        \column{0.48\textwidth}
+        \textbf{\textcolor{blue}{Why Reduce the Search Space?}}
+        \begin{itemize}
+            \item[\faTasks] Tasks: Maximum Coverage, Influence Maximization, Traveling Salesman
+            \item[\faFilter] Many elements are irrelevant to the optimal solution
+            \item[\faBolt] A smaller ground set leads to faster exact and heuristic solvers
+        \end{itemize}
+
+    \end{columns}
+\end{frame}
+
+\begin{frame}[plain]{Problem: Search Space Pruning}
+We are given a combinatorial optimization problem with ground set $\mathcal{U}$ and an exact method $\mathcal{OPT}$.
+The optimal solution is:
+\[X^\star = \operatorname*{arg\,max}_{X \subset \mathcal{U},\, |X| \leq B} f(X)\]
+
+\textbf{Goal:} Find a much smaller set $\mathcal{U}' \subset \mathcal{U}$, with $|\mathcal{U}'| \ll |\mathcal{U}|$, such that solution quality is preserved:
+\[
+\frac{f\!\left(\mathcal{OPT}(\mathcal{U}')\right)}{f\!\left(\mathcal{OPT}(\mathcal{U})\right)} \geq 1 - \epsilon
+\]
+
+\textbf{My role:} Sole first author — formulated the problem, designed the two-stage architecture, implemented all components, and ran all experiments.
+\end{frame}
+
+\begin{frame}[plain]{Prior Work \& Limitations}
+\begin{columns}[T,onlytextwidth]
+\column{0.5\textwidth}
+\textbf{Existing Approaches}
+\begin{itemize}
+    \item \textbf{Supervised Learning} (LeNSE \cite{ireland2022lense}, COMBHelper \cite{tian2024combhelper})
+    \begin{itemize}
+        \item[\textcolor{red}{\xmark}] Handcrafted features; domain knowledge required
+    \end{itemize}
+    \item \textbf{Supervised + RL} (GCOMB \cite{manchanda2020gcomb})
+    \begin{itemize}
+        \item[\textcolor{red}{\xmark}] Problem-specific tuning required
+    \end{itemize}
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Common Issues}
+\begin{itemize}
+    \item [\textcolor{red}{\xmark}] Not generalizable across problem types
+    \item [\textcolor{red}{\xmark}] Costly feature engineering
+    \item [\textcolor{red}{\xmark}] Poor scalability to large graphs
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}[plain]{Our Approach}
 \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
     \textbf{GCOMB, COMBHelper, LeNSE}
-    \vspace{0.2cm}
     \begin{itemize}
-        \item [\textcolor{red}{\xmark}] Handcrafted heuristics/features.
-        \item [\textcolor{red}{\xmark}] Problem-specific tuning.
-        \item [\textcolor{red}{\xmark}] High computational overhead.
-        \item [\textcolor{red}{\xmark}] Limited scalability \& adaptability.
+        \item [\textcolor{red}{\xmark}] Handcrafted heuristics and features
+        \item [\textcolor{red}{\xmark}] Problem-specific tuning
+        \item [\textcolor{red}{\xmark}] High computational overhead
+        \item [\textcolor{red}{\xmark}] Limited scalability and adaptability
     \end{itemize}
 
     \column{0.52\textwidth}
-    \textbf{Our Approach}
-    \vspace{0.2cm}
+    \textbf{Hierarchical DeepPruner}
     \begin{itemize}
-        \item [\textcolor{green}{\cmark}] Prunes $>$95\% of ground set.
-        \item [\textcolor{green}{\cmark}] Best mean combined metric across tasks.
-        \item [\textcolor{green}{\cmark}] No handcrafted features.
-        \item [\textcolor{green}{\cmark}] Problem-agnostic and lightweight.
-        \item [\textcolor{green}{\cmark}] Robust across distributions and CO problems.
+        \item [\textcolor{green}{\cmark}] Prunes $>$95\% of the ground set
+        \item [\textcolor{green}{\cmark}] Best mean combined metric across tasks
+        \item [\textcolor{green}{\cmark}] No handcrafted features
+        \item [\textcolor{green}{\cmark}] Problem-agnostic and lightweight
+        \item [\textcolor{green}{\cmark}] Robust across graph distributions and problem types
     \end{itemize}
-
 \end{columns}
-
 \end{frame}
 
-
-
-
-
-
-
-\begin{frame}[plain]{Hierarchical DeepPruner}
-
+\begin{frame}[plain]{Architecture}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{logos/H_deeppruner_cropped.pdf}
 \end{figure}
-
-    
 \end{frame}
 
-\begin{frame}[plain]{First Stage: GNN-Based Pre-Pruning}
-\begin{itemize} 
-    \item [\faBullseye] \textbf{Goal:} Eliminate nodes unlikely to belong to the solution set before running NMCTS.
-    \item [\faLightbulb] \textbf{Key Insight:} Nodes in the optimal set often share \textbf{local structural patterns}.
-    \item [\faBolt] \textbf{Innovation:} 
-    \begin{itemize}
-        \item Replace handcrafted heuristics (e.g., TOP-K) with a trainable GNN.
-        \item Use random node initialization: \( h_{v_i} \sim U(0,1) \), avoiding problem-specific features.
-    \end{itemize}
-    \item [\faDatabase] \textbf{Training Setup:}
-    \begin{itemize}
-        \item ER graphs ($n=2000$, $p=0.1$), budget = $100$.
-        \item Ground-truth labels from heuristic solver.
-    \end{itemize}
-    \item [\faBalanceScale] \textbf{Loss Function:} Weighted cross-entropy to avoid class imbalance (non-solution nodes).
-    \item [\faCogs] \textbf{Model:} 2-layer GCN. Other GNNs like GraphSAGE underperform due to limited neighborhood sampling.
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}[plain]{GNN Pre-Pruning: Inference \& Efficiency}
+\begin{frame}[plain]{Stage 1: GNN Pre-Pruning}
 \begin{itemize}
-    \item [\faForward] \textbf{Inference:} One forward pass over the graph to predict node inclusion probabilities.
-    \item [\faCut] \textbf{Pruning Rule:} Discard nodes predicted to belong to the negative class (i.e., not part of the solution).
-
-    \item [\faRocket] \textbf{Efficiency:}
-    \begin{itemize}
-        \item Significantly reduces ground set size before NMCTS.
-        \item Accelerates search without harming objective value.
-    \end{itemize}
-    \item [\faExclamationTriangle] \textbf{Trade-off:} Slight increase in computation during training due to full-neighborhood GCN.
-    \item [\faCheckCircle] \textbf{Justification:} Training is performed only once; inference is lightweight and fast.
+    \item [\faBullseye] \textbf{Goal:} Eliminate nodes unlikely to belong to the solution before running MCTS.
+    \item [\faLightbulb] \textbf{Key Insight:} Nodes in the optimal set tend to share local structural patterns.
+    \item [\faBolt] \textbf{Innovation:} Replace handcrafted heuristics with a trainable GNN; initialize node features as $h_{v_i} \sim U(0,1)$, requiring no domain-specific input.
+    \item [\faDatabase] \textbf{Training:} Erd\H{o}s-R\'{e}nyi graphs ($n{=}2000$, $p{=}0.1$), budget $= 100$; labels obtained from a heuristic solver.
+    \item [\faBalanceScale] \textbf{Loss:} Weighted cross-entropy to handle class imbalance, since solution nodes are rare.
+    \item [\faCogs] \textbf{Model:} 2-layer GCN. \textbf{Software:} PyTorch Geometric.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[plain]{Second Stage: Fine-Pruning with MCTS}
+\begin{frame}[plain]{Stage 2: NMCTS Refinement}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{logos/MCTS_cropped.pdf}
+    \includegraphics[width=0.85\linewidth]{logos/MCTS_cropped.pdf}
 \end{figure}
-
-    
 \end{frame}
 
-
-\begin{frame}[plain]{Second Stage: NMCTS for Refined Pruning}
+\begin{frame}[plain]{Stage 2: NMCTS Details}
 \begin{itemize}
-    \item [\faBullseye] \textbf{Goal:} Refine the pruned set $\mathcal{U}_{\text{GNN}}$ from GNN by considering relative element importance.
-    \item [\faExclamation] \textbf{Limitation of GNN:}
-    \begin{itemize}
-        \item GNN predicts inclusion independently, ignoring interactions.
-        \item E.g., if both $v_1$ and $v_2$ are in $\mathcal{U}_{\text{GNN}}$ but contribute equivalently, one can be safely removed.
-    \end{itemize}
-    \item [\faSitemap] \textbf{Approach:}
-    \begin{itemize}
-        \item Use NMCTS (Neural Monte Carlo Tree Search) to build a high-quality subset iteratively.
-        \item GNN guides initial policy; solution is constructed by adding one element at a time.
-        \item Trained on the same ER graphs as the GNN.
-    \end{itemize}
-    \item [\faRandom] \textbf{Output:} Variable-size pruned set informed by GNN predictions \& adaptive search.
+    \item [\faBullseye] \textbf{Goal:} Refine $\mathcal{U}_{\text{GNN}}$ by capturing interactions between nodes that the GNN scores independently.
+    \item [\faSitemap] \textbf{Approach:} Neural MCTS guided by the GNN policy; constructs the solution subset one node at a time.
+    \item [\faSearch] \textbf{Progressive Widening:} Add a child node if $\lfloor \text{Visits}(N_p)^\alpha \rfloor \geq |\text{Children}(N_p)|$, with $\alpha{=}0.1$.
+    \item [\faLevelUpAlt] \textbf{Progressive Deepening:} Search to depth 50; restart from the root when the objective improves by $\geq 1\%$.
+    \item [\faChartLine] \textbf{Outcome:} A compact, high-quality pruned set with minimal objective loss.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[plain]{NMCTS with Progressive Refinement}
-\begin{itemize}
-    \item [\faBullseye] \textbf{Objective:} Refine the GNN-pruned set by sequentially constructing high-quality subsets.
-    \item [\faSitemap] \textbf{Approach:} Guide \textbf{Neural MCTS (NMCTS)} with GNN priors to explore promising selections.
-    \item [\faSearch] \textbf{Progressive Widening:} 
-    \begin{itemize}
-        \item Gradually increase explored actions as parent node visits grow.
-        \item Add child node if $\lfloor \text{Visits}(N_p)^\alpha \rfloor \geq |\text{CHILDREN}(N_p)|$.
-        \item Set $\alpha = 0.1$ in all experiments.
-    \end{itemize}
-    \item [\faLevelUpAlt] \textbf{Progressive Deepening:} 
-    \begin{itemize}
-        \item Start from an empty set, search up to depth $50$.
-        \item Restart from root if objective improves $\geq 1\%$.
-        \item Halt if no significant gain to avoid unnecessary expansion.
-    \end{itemize}
-    \item [\faChartLine] \textbf{Outcome:} Yields a compact, high-quality subset with minimal loss in objective value.
-\end{itemize}
-\end{frame}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{frame}[plain]{Empirical Evaluation}
+\begin{frame}[plain]{Results: Speed-up}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{logos/speed_up.pdf}
 \end{figure}
-
-    
 \end{frame}
 
-
-\begin{frame}[plain]{Empirical Evaluation}
-
+\begin{frame}[plain]{Results: Solution Quality}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{logos/violin_plots.pdf}
-    % \caption{Caption}
-    % \label{fig:placeholder}
 \end{figure}
-    
+\end{frame}
 \end{frame}
 
 
-\begin{frame}[plain]{Key Takeaway}
+%======================================================
+%  SUMMARY
+%======================================================
 
-
-
+\begin{frame}[plain]{Summary}
 \begin{columns}[T,onlytextwidth]
-    % Left Column: Image
-    \column{0.3\textwidth}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.9\linewidth]{logos/Pruner.png}
-        % \caption{}
-    \end{figure}
-    Our pruning algorithm is efficient and effective
-    % Right Column: Future Work
-    \column{0.55\textwidth}
-    \textbf{Future Work:}
+    \column{0.5\textwidth}
+    \textbf{What I Bring}
     \begin{itemize}
-        \item Learning algorithms for cases where simple and fast heuristics are ineffective, but pruning improves their performance.
+        \item[\faGraduationCap] EEE foundation combined with CS optimization expertise
+        \item[\faCogs] Experience designing learning-guided solvers for NP-hard graph problems
+        \item[\faRobot] Familiarity with RL methods for MIP: learning-to-branch and cut selection within branch-and-bound
+        \item[\faWrench] Hands-on experience with Gurobi, CPLEX, PyTorch, and PyTorch Geometric
+    \end{itemize}
+
+    \column{0.5\textwidth}
+    \textbf{Key Result}
+    \begin{itemize}
+        \item[\faCut] Hierarchical DeepPruner prunes $>$95\% of the ground set while preserving solution quality
+        \item[\faBolt] Achieves significant speed-ups over baselines with no handcrafted features
+        \item[\faForward] Framework is problem-agnostic and generalizes across graph distributions and problem types
     \end{itemize}
 \end{columns}
-
 \end{frame}
 
 \begin{frame}[plain]{References}
